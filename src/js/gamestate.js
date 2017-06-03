@@ -44,17 +44,9 @@ E.game = {
         E.gfx.checker(16,16,2);
 
 
-        E.player = {
-          x: 128,
-          y: 128,
-          radius: 10,
-          xvel: 0,
-          yvel: 0,
-          speed: 6
 
-        }
 
-        E.drag = .97;
+
 
         E.songTrigger = false;
 
@@ -70,6 +62,7 @@ E.game = {
     },
 
     step: function(dt) {
+        //------rotate the spinny background orbs
         E.t += dt;
 
         E.cos = Math.cos(dt);
@@ -93,59 +86,28 @@ E.game = {
             E.triangles[i].x3 = E.cos * dx3 - E.sin * dy3 + 128;
             E.triangles[i].y3 = E.sin * dx3 + E.cos * dy3 + 128;
         };
+        //------end rotate background orbs
 
-        E.player.x += dt * E.player.xvel;
-        E.player.y += dt * E.player.yvel;
-        E.player.xvel *= E.drag;
-        E.player.yvel *= E.drag;
+        E.player.update(dt);
 
-        //player movement
-        if (Key.isDown(Key.a)) {
-            E.player.xvel -=E.player.speed;
-        }
         //----hacky sound test
         if(Key.isDown(Key.z)){
           E.songTrigger = true
         }
         if(E.songTrigger){
           E.songTrigger = false;
-          E.playSound(E.sounds.song, 1, 1, 1);
+          E.playSound(E.sounds.song, 1, 1, 0);
         }
         //---end hacky sound test
 
-        if (Key.isDown(Key.d)){
-            E.player.xvel +=E.player.speed;
-        }
-        if(Key.isDown(Key.w)){
-          E.player.yvel -=E.player.speed;
-        }
-        if(Key.isDown(Key.s)) {
-          E.player.yvel +=E.player.speed;
-        }
-        //end player movement
 
-        //world wrap for player
-        if(E.player.x > 256+E.player.radius*2){
-          E.player.x = -E.player.radius
-        }
-        if(E.player.x < 0-E.player.radius*2){
-          E.player.x = 256+E.player.radius
-        }
-        if(E.player.y > 256+E.player.radius*2){
-          E.player.y = -E.player.radius
-        }
-        if(E.player.y < 0-E.player.radius*2){
-          E.player.y = 256+E.player.radius
-        }
-        //end world wrap for player
 
-        //kill key log
     },
 
     render: function(dt) {
-
+        //pink background orbs
         E.renderTarget = E.screen;
-        //E.gfx.fillRect(0,0,256,256,0);
+        E.gfx.fillRect(0,0,256,256,0);
         for(var i = 0; i < E.triangles.length; i++){
 
             E.gfx.triangle(
@@ -157,23 +119,21 @@ E.game = {
               E.triangles[i].y3,
               2
             )
+
           }
-        //E.pal = [0,1,0,1,0,1,0,1,0,0,1,0,1,0,1,0,1,0,0,1,0,1,0,1,0,1,0,0,1,0,1,0,1,0,1,0]
+        //end background
 
-        E.gfx.fillCircle(E.player.x, E.player.y, E.player.radius, 4);
+        E.player.draw();
 
-        var i = 4000;
-        E.renderTarget = E.screen;
-        while(i--){
-            var x = (Math.random()*256)|0;
-            var y = (Math.random()*256)|0;
-            var color = E.ram[E.screen + (y*256+x)];
-            E.gfx.circle(x, y, 1, color-1);
-        }
-
-        E.gfx.fillCircle(E.player.x, E.player.y, E.player.radius, 4);
-
-        //composite
+        //dither-trails effect
+        // var i = 4000;
+        // while(i--){
+        //     var x = (Math.random()*256)|0;
+        //     var y = (Math.random()*256)|0;
+        //     var color = E.ram[E.screen + (y*256+x)];  //get the color at a random location on screen
+        //     E.gfx.circle(x, y, 1, color-1); //draw a 1px diameter circle, less 1 from its color index (towards black);
+        // }
+        //end dither-trails effect
 
         E.render();
 

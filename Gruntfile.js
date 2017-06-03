@@ -39,6 +39,7 @@ module.exports = function(grunt) {
 					'src/js/lib/text.js',
 
 					'src/js/gamestate.js',
+					'src/js/player.js',
 
 					'src/js/main.js',
 					'src/js/last.js'

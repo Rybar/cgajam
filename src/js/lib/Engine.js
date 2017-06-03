@@ -19,6 +19,11 @@ ENGINE = {
     page6: 0x60000,
     page7: 0x70000,
 
+    TRANSPARENT: 0,
+    BLACK: 1,
+    MAGENTA: 2,
+    CYAN: 3,
+    WHITE: 4,
     //DB32 Palette
     /* colors: [0xff000000, 0xff342022, 0xff3c2845, 0xff313966, 0xff3b568f, 0xff2671df, 0xff66a0d9, 0xff9ac3ee, 0xff36f2fb,
         0xff50e599, 0xff30be6a, 0xff6e9437, 0xff2f694b, 0xff244b52, 0xff393c32, 0xff743f3f, 0xff826030, 0xffe16e5b,

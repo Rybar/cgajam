@@ -16,12 +16,16 @@ E.game = {
 
       // --------end hacky sound stuff
 
+      //init vid capture
+      //E.capturer = new CCapture( {format: 'gif', workersPath: ''});
+
+      //E.capturer.start();
 
       E.triangles = [];
-      for(var i = 0; i < 150; i++){
+      for(var i = 0; i < 50; i++){
         let ox = (Math.random() * 255)|0;
         let oy = (Math.random() * 255)|0;
-        let rad = 1;
+        let rad = 15;
         E.triangles.push({
           x1: ox + (Math.random() * rad * 4) - rad,
           y1: oy + (Math.random() * rad * 4) - rad,
@@ -29,24 +33,16 @@ E.game = {
           y2: oy + (Math.random() * rad * 4) - rad,
           x3: ox + (Math.random() * rad * 4) - rad,
           y3: oy + (Math.random() * rad * 4) - rad,
-          color: ( (Math.random() * 4)|0 ) + 1,
+          color: ( (Math.random() * 2)|0 ) + 1,
         })
       }
 
-
-        E.bgColor = 0;
-        E.fgColor = 21;
         E.t = 0;
         E.moveX = 0;
 
         E.renderTarget = E.page2;
         E.gfx.fillRect(0,0,256,256,1);
         E.gfx.checker(16,16,2);
-
-
-
-
-
 
         E.songTrigger = false;
 
@@ -97,6 +93,8 @@ E.game = {
         if(E.songTrigger){
           E.songTrigger = false;
           E.playSound(E.sounds.song, 1, 1, 0);
+          //E.capturer.stop();
+          //E.capturer.save();
         }
         //---end hacky sound test
 
@@ -107,7 +105,8 @@ E.game = {
     render: function(dt) {
         //pink background orbs
         E.renderTarget = E.screen;
-        E.gfx.fillRect(0,0,256,256,0);
+
+        //E.gfx.fillRect(0,0,256,256,0);
         for(var i = 0; i < E.triangles.length; i++){
 
             E.gfx.triangle(
@@ -117,7 +116,7 @@ E.game = {
               E.triangles[i].y2,
               E.triangles[i].x3,
               E.triangles[i].y3,
-              2
+              E.triangles[i].color
             )
 
           }
@@ -126,16 +125,18 @@ E.game = {
         E.player.draw();
 
         //dither-trails effect
-        // var i = 4000;
-        // while(i--){
-        //     var x = (Math.random()*256)|0;
-        //     var y = (Math.random()*256)|0;
-        //     var color = E.ram[E.screen + (y*256+x)];  //get the color at a random location on screen
-        //     E.gfx.circle(x, y, 1, color-1); //draw a 1px diameter circle, less 1 from its color index (towards black);
-        // }
+        var i = 4000;
+        while(i--){
+            var x = (Math.random()*256)|0;
+            var y = (Math.random()*256)|0;
+            var color = E.ram[E.screen + (y*256+x)];  //get the color at a random location on screen
+            E.gfx.circle(x, y, 1, color-1); //draw a 1px diameter circle, less 1 from its color index (towards black);
+        }
         //end dither-trails effect
 
         E.render();
+
+        //E.capturer.capture(E.canvas);
 
     },
 

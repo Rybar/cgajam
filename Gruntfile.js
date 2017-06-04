@@ -31,6 +31,7 @@ module.exports = function(grunt) {
 				src  : [
 					'src/js/first.js',
 					'src/js/lib/Engine.js',
+					'src/js/lib/CCapture.all.min.js',
 					'src/js/assets.js',
 
 					'src/js/lib/sonantx.js',

@@ -1,24 +1,35 @@
-/*global GAME*/
-//todo: factor in global glitch variables
-//todo: modify glitch render to glitch both directions on both axes
+
 	Txt = {
 		textLine: function (opt) {
-			//
-			gl = opt.glitch || {};
-
 
 			var textLength = opt.text.length,
 				size = 5;
 			for (var i = 0; i < textLength; i++) {
-				var letter = assets.letters[( opt.text.charAt(i) )] || Assets.letters['unknown'];
+				var letter = E.assets.letters[( opt.text.charAt(i) )] || E.assets.letters['unknown'];
 				for (var y = 0; y < size; y++) {
 					//var g = (Math.random() > opt.glitchChance) * opt.glitchFactor;
 					for (var x = 0; x < size; x++) {
 						if (letter[y][x] === 1) {
-							var gx = (Math.random() < gl.xch || 0) * (Math.random()-.5) * gl.xamt || 0;
-							var gy = (Math.random() < gl.ych || 0) * (Math.random()-.5) * gl.yamt || 0;
-							//if(g)
-							E.gfx.fillRect(opt.x + ( x * opt.scale ) + gx + ( ( size * opt.scale ) + opt.hspacing ) * i, opt.y + (y * opt.scale) + gy, opt.scale, opt.scale);
+							//var gx = (Math.random() < gl.xch || 0) * (Math.random()-.5) * gl.xamt || 0;
+							//var gy = (Math.random() < gl.ych || 0) * (Math.random()-.5) * gl.yamt || 0;
+
+							if(opt.scale === 1){
+								E.gfx.pset(
+									opt.x + ( x * opt.scale ) + ( ( size * opt.scale ) + opt.hspacing ) * i,
+									opt.y + (y * opt.scale),
+									opt.color
+								);
+							}
+
+							else {
+								E.gfx.fillRect(
+								opt.x + ( x * opt.scale ) + ( ( size * opt.scale ) + opt.hspacing ) * i,
+								opt.y + (y * opt.scale),
+								opt.x + ( x * opt.scale ) + ( ( size * opt.scale ) + opt.hspacing ) * i + opt.scale,
+								opt.y + (y * opt.scale) + opt.scale,
+								opt.color);
+							}
+								//console.log(opt.color);
 						}
 					}
 				}
@@ -93,7 +104,7 @@
 						text: line,
 						hspacing: opt.hspacing || 0,
 						scale: opt.scale || 1,
-						glitch: opt.glitch
+						color: opt.color
 					});
 				}
 			}

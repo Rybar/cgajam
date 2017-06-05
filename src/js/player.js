@@ -1,6 +1,6 @@
 E.player = {
   x: 128,
-  y: 128,
+  y: 230,
   radius: 3,
   xvel: 0,
   yvel: 0,

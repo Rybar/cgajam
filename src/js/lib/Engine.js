@@ -48,42 +48,6 @@ ENGINE = {
 
     currentState: 0,
 
-    //col enum
-    // col: {
-    //     Black: 0,
-    //     Valhalla: 1,
-    //     LouLou: 2,
-    //     OiledCedar: 3,
-    //     Rope: 4,
-    //     TahitiGold: 5,
-    //     Twine: 6,
-    //     Pancho: 7,
-    //     GoldenFizz: 8,
-    //     Atlantis: 9,
-    //     Christi: 10,
-    //     ElfGreen: 11,
-    //     Dell: 12,
-    //     Verdigris: 13,
-    //     Opal: 14,
-    //     DeepKoamaru: 15,
-    //     VeniceBlue: 16,
-    //     RoyalBlue: 17,
-    //     Cornflower: 18,
-    //     Viking: 19,
-    //     LightSteelBlue: 20,
-    //     White: 21,
-    //     Heather: 22,
-    //     Topaz: 23,
-    //     DimGray: 24,
-    //     SmokeyAsh: 25,
-    //     Clairvoyant: 26,
-    //     Red: 27,
-    //     Mandy: 28,
-    //     PinkPlum: 29,
-    //     RainForest: 30,
-    //     Stinger: 31
-    // },
-
     playSound: function(buffer, playbackRate, pan, loop) {
 
       var source = audioCtx.createBufferSource();
@@ -435,86 +399,6 @@ ENGINE = {
         }
     },
 
-/*    UIObject: {
-        intersects: function(obj, mouse) {
-            var t = 5; //tolerance
-            var xIntersect = (mouse.x + t) > obj.x && (mouse.x - t) < obj.x + obj.width;
-            var yIntersect = (mouse.y + t) > obj.y && (mouse.y - t) < obj.y + obj.height;
-            return  xIntersect && yIntersect;
-        },
-        updateStats: function(canvas){
-            if (this.intersects(this, canvas.mouse)) {
-                this.hovered = true;
-                if (canvas.mouse.clicked) {
-                    this.clicked = true;
-                }
-            } else {
-                this.hovered = false;
-            }
-
-            if (!canvas.mouse.down) {
-                this.clicked = false;
-            }
-        }
-    },
-
-    imagetoRam: function(image, address) {
-
-        let tempCanvas = document.createElement('canvas');
-        tempCanvas.width = 256;
-        tempCanvas.height = 256;
-        let context = tempCanvas.getContext('2d');
-        //draw image to canvas
-        context.drawImage(image, 0, 0);
-
-        //get image data
-        var imageData = context.getImageData(0,0, 256, 256);
-
-        //set up 32bit view of buffer
-        let data = new Uint32Array(imageData.data.buffer);
-
-        //compare buffer to palette (loop)
-        for(var i = 0; i < data.length; i++) {
-            //set ram to color index
-            E.ram[address + i] = E.colors.indexOf(data[i]);
-            //console.log(data[i]);
-        }
-
-
-    },
-
-    screenCapture: function (canvas) {
-
-        var image = canvas.toDataURL("image/png");
-
-        window.open(image);
-
-    },
-
-    memoryCapture: function () {
-
-        console.log(E.ram);
-
-        //var tmpcanvas = document.createElement('canvas');
-        //var ctx = tmpcanvas.getContext('2d');
-        //tmpcanvas.width = 256;
-        //tmpcanvas.height = 256;
-        //var ramimage = ctx.getImageData(0,0, 256, 256);
-        //
-        //
-        //var buf = new ArrayBuffer(ramimage.data.length);
-        //console.log(ramimage.data.length, E.ram.length);
-        ////var buf8 = new Uint8ClampedArray(buf);
-        //var data = new Uint32Array(buf);
-        //
-        //ramimage.data.set(E.ram);
-        //ctx.putImageData(ramimage, 0,0);
-        //console.log(ramimage);
-        //var ramcapture = tmpcanvas.toDataURL("image/png");
-        //window.open(ramcapture);
-
-    }, */
-
     canvasInit: function () {
 
         E.canvas = document.getElementById('canvas');
@@ -535,7 +419,6 @@ ENGINE = {
         E.buf = new ArrayBuffer(E.imageData.data.length);
         E.buf8 = new Uint8ClampedArray(E.buf);
         E.data = new Uint32Array(E.buf);
-       // console.log(E.buf.length, E.buf8.length, E.data.length);
         E.ram = new Uint8ClampedArray(0x80000);
 
         E.renderTarget = E.screen;
@@ -549,16 +432,20 @@ ENGINE = {
         var i = 0x10000;  // display is first 0x10000 bytes of ram
 
         while (i--) {
-            E.data[i] = E.colors[E.pal[E.ram[i]]]; //data is 32bit view of final screen buffer
+          /*
+          E.data is 32bit view of final screen buffer
+          for each pixel on screen, we look up it's color and assign it
+          */
+            E.data[i] = E.colors[E.pal[E.ram[i]]];
 
         }
 
         E.imageData.data.set(E.buf8);
 
         E.smallctx.putImageData(E.imageData, 0, 0);
-        //E.ctx.putImageData(E.imageData, 0, 0);
 
-        //E.ctx.drawImage(E.smallcanvas, 0, 0);
+
+        //maintain aspect ratio and center on resize
         E.compositeSize = window.innerWidth < window.innerHeight ? window.innerWidth : window.innerHeight;
         E.compositeOrigin = ( (window.innerWidth - E.compositeSize)/2)|0;
         E.ctx.imageSmoothingEnabled = false;
@@ -566,26 +453,7 @@ ENGINE = {
 
         E.ctx.drawImage(E.smallcanvas, 0, 0, 255, 255, E.compositeOrigin, 0, E.compositeSize, E.compositeSize);
 
-
-
     },
-
-    switchState: function(state) {
-            if(arguments.length > 0){app.setState(E.states[state])}
-            else{
-
-              E.currentState += 1;
-              if(E.currentState > E.states.length-1){
-                  E.currentState = 0;
-              }
-              app.setState(E.states[E.currentState]);
-
-            }
-
-
-
-    }
-
 
 }
 

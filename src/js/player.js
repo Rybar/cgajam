@@ -10,23 +10,24 @@ E.player = {
   x1: 128-9,
   x2: 128+9,
   x3: 128,
-  y1: 128+9,
-  y2: 128+9,
-  y3: 128-9,
+  y1: 230+9,
+  y2: 230+9,
+  y3: 230-9,
 
   update: function(dt) {
+    let xIntegrate = dt * E.player.xvel * E.player.drag;
+    let yIntegrate = dt * E.player.yvel * E.player.drag;
 
-
-    E.player.x += dt * E.player.xvel;
-    E.player.y += dt * E.player.yvel;
-    E.player.xvel *= E.player.drag;
-    E.player.yvel *= E.player.drag;
-    E.player.x1 += dt * E.player.xvel;
-    E.player.x2 += dt * E.player.xvel;
-    E.player.x3 += dt * E.player.xvel;
-    E.player.y1 += dt * E.player.yvel;
-    E.player.y2 += dt * E.player.yvel;
-    E.player.y3 += dt * E.player.yvel;
+    E.player.x += xIntegrate;
+    E.player.y += yIntegrate;
+    // E.player.xvel *= E.player.drag;
+    // E.player.yvel *= E.player.drag;
+    E.player.x1 += xIntegrate;
+    E.player.x2 += xIntegrate;
+    E.player.x3 += xIntegrate;
+    E.player.y1 += yIntegrate;
+    E.player.y2 += yIntegrate;
+    E.player.y3 += yIntegrate;
 
 
 
@@ -39,12 +40,19 @@ E.player = {
     // E.player.x3 = E.player.x;
     // E.player.y3 = E.player.y - 9;
 
-    let dx1 = E.player.x1 - E.player.x;
-    let dx2 = E.player.x2 - E.player.x;
-    let dx3 = E.player.x3 - E.player.x;
-    let dy1 = E.player.y1 - E.player.y;
-    let dy2 = E.player.y2 - E.player.y;
-    let dy3 = E.player.y3 - E.player.y;
+    // let dx1 = E.player.x1 - E.player.x;
+    // let dx2 = E.player.x2 - E.player.x;
+    // let dx3 = E.player.x3 - E.player.x;
+    // let dy1 = E.player.y1 - E.player.y;
+    // let dy2 = E.player.y2 - E.player.y;
+    // let dy3 = E.player.y3 - E.player.y;
+
+    let dx1 = -9;
+    let dx2 = 9;
+    let dx3 = 0;
+    let dy1 = 9;
+    let dy2 = 9;
+    let dy3 = -9;
 
 
 
@@ -78,6 +86,11 @@ E.player = {
     }
     //end player movement
 
+    //pew pew pew
+    if(Key.isDown(Key.SPACE)){
+      
+    }
+
     //world wrap for player
     if(E.player.x > 256+E.player.radius*2){
       E.player.x = -E.player.radius
@@ -98,8 +111,8 @@ E.player = {
 
   draw: function(dt) {
 
-    E.gfx.fillCircle(E.player.x, E.player.y, E.player.radius, 4);
-    E.gfx.triangle(
+    //E.gfx.fillCircle(E.player.x, E.player.y, E.player.radius, 4);
+    E.gfx.fillTriangle(
       E.player.x1,
       E.player.y1,
       E.player.x2,

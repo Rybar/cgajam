@@ -21,11 +21,22 @@ E.game = {
 
       //E.capturer.start();
 
+      E.bullets = [];
+      for(var i = 0; i < 200; i++){
+        E.bullets.push({
+          x: -10,
+          y: -10,
+          xVel: 0,
+          yVel: 0,
+        })
+      }
+
+
       E.triangles = [];
       for(var i = 0; i < 200; i++){
         let ox = (Math.random() * 255)|0;
         let oy = (Math.random() * 255)|0;
-        let rad = 5;
+        let rad = Math.random() * 10;
         E.triangles.push({
           x1: ox + (Math.random() * rad * 4) - rad,
           y1: oy + (Math.random() * rad * 4) - rad,
@@ -34,11 +45,13 @@ E.game = {
           x3: ox + (Math.random() * rad * 4) - rad,
           y3: oy + (Math.random() * rad * 4) - rad,
           color: ( (Math.random() * 2)|0 ) + 1,
+          speed: rad,
         })
       }
 
         E.t = 0;
         E.moveX = 0;
+        E.speedFactor = .2;
 
         // E.renderTarget = E.page2;
         // E.gfx.fillRect(0,0,256,256,1);
@@ -61,13 +74,25 @@ E.game = {
         //------rotate the spinny background orbs
         E.t += dt;
 
+        //still using these for player doodad rotation
         E.cos = Math.cos(dt);
         E.sin = Math.sin(dt);
 
         for(var i = 0; i < E.triangles.length; i++){
 
-            var tri = E.triangles[i],
+            var tri = E.triangles[i];
 
+
+            tri.y1 += tri.speed * E.speedFactor;
+            tri.y2 += tri.speed * E.speedFactor;
+            tri.y3 += tri.speed * E.speedFactor;
+
+            if(tri.y1 >= 280){
+              tri.y1 -= 280;
+              tri.y2 -= 280;
+              tri.y3 -= 280;
+            }
+            /*  //rotate code
             dx1 = tri.x1 + -128,
             dx2 = tri.x2 + -128,
             dx3 = tri.x3 + -128,
@@ -80,7 +105,8 @@ E.game = {
             E.triangles[i].x2 = E.cos * dx2 - E.sin * dy2 + 128;
             E.triangles[i].y2 = E.sin * dx2 + E.cos * dy2 + 128;
             E.triangles[i].x3 = E.cos * dx3 - E.sin * dy3 + 128;
-            E.triangles[i].y3 = E.sin * dx3 + E.cos * dy3 + 128;
+            E.triangles[i].y3 = E.sin * dx3 + E.cos * dy3 + 128;*/
+
         };
         //------end rotate background orbs
 
@@ -124,9 +150,9 @@ E.game = {
 
         E.player.draw();
 
-        Txt.text({
+        /* Txt.text({
                 x: 128,
-                y: 40 + Math.sin(E.t*2.5)*15,
+              y: 40 + Math.sin(E.t*2.5)*15,
                 text: 'CGA\nJAM',
                 hspacing: 8 + Math.cos(E.t*2.9)*4,
                 vspacing: 15 + Math.sin(E.t*3.5)*5,
@@ -136,18 +162,18 @@ E.game = {
                 snap: 1,
                 render: 1,
                 color: E.WHITE,
-            });
+            }); */
 
 
 
         //dither-trails effect
         E.renderTarget = E.page3;
-        var i = 5000;
+        var i = 2000;
         while(i--){
             var x = (Math.random()*256)|0;
             var y = (Math.random()*256)|0;
             var color = E.ram[E.page1 + (y*256+x)];  //get the color at a random location on screen
-            E.gfx.circle(x, y-1, 1, color-1); //draw a 1px diameter circle, less 1 from its color index (towards black);
+            E.gfx.circle(x, y+1, 1, color-1); //draw a 1px diameter circle, less 1 from its color index (towards black);
         }
         //end dither-trails effect
 
@@ -160,12 +186,13 @@ E.game = {
         //page screen clear
         E.gfx.fillRect(0,0,256,256,0);
         Txt.text({
-                x: 128,
-                y: 200,
-                text: "TEXT RENDERER OPERATIONAL\n" + E.player.x.toString().substring(0,15),
+                x: 8,
+                y: 240,
+                text: "X: "+E.player.x.toString().substring(0,7) +
+                      "\nY: "+E.player.y.toString().substring(0,7),
                 hspacing: 2,
                 vspacing: 2,
-                halign: 'center',
+                halign: 'left',
                 valign: 'top',
                 scale: 1,
                 snap: 1,

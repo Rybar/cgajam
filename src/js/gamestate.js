@@ -14,11 +14,11 @@ E.game = {
 
       });
 
+
       // --------end hacky sound stuff
 
       //init vid capture
       //E.capturer = new CCapture( {format: 'gif', workersPath: ''});
-
       //E.capturer.start();
 
       E.bullets = [];

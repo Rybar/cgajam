@@ -31,8 +31,11 @@ module.exports = function(grunt) {
 				src  : [
 					'src/js/first.js',
 					'src/js/lib/Engine.js',
-					'src/js/lib/CCapture.all.min.js',
+					//'src/js/lib/CCapture.all.min.js',
 					'src/js/assets.js',
+					'src/js/lib/pool.js',
+					'src/js/lib/entity.js',
+					'src/js/statemachine.js',
 
 					'src/js/lib/sonantx.js',
 					'src/js/lib/stats.js',
@@ -76,7 +79,6 @@ module.exports = function(grunt) {
 				options: {
 					mangle: true,
 					compress: {
-						//TODO: Optimize using compressor options (https://github.com/mishoo/UglifyJS2#compressor-options)
 						dead_code: true,
 						drop_debugger: true,
 						sequences: true,

@@ -1,18 +1,15 @@
 
 var E = ENGINE;
-/**
- * Created by ryan on 3/6/17.
- */
-/**
- * Created by ryan on 3/3/17.
- */
+
 init = function(){
 
   E.last = 0;
   E.dt = 0;
   E.now = 0;
+
   stats = new Stats();
   document.body.appendChild( stats.dom );
+
   E.canvasInit();
   E.game.create();
 
@@ -22,7 +19,6 @@ init = function(){
       }, false);
       window.addEventListener('keydown', function (event) {
           Key.onKeydown(event);
-          // console.log('key pressed');
       }, false);
       window.addEventListener('blur', function (event) {
           paused = true;

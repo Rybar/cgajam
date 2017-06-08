@@ -21,19 +21,19 @@ E.game = {
       //E.capturer = new CCapture( {format: 'gif', workersPath: ''});
       //E.capturer.start();
 
-      E.bullets = [];
-      for(var i = 0; i < 200; i++){
-        E.bullets.push({
-          x: -10,
-          y: -10,
-          xVel: 0,
-          yVel: 0,
-        })
-      }
+      // E.bullets = [];
+      // for(var i = 0; i < 400; i++){
+      //   E.bullets.push({
+      //     x: -10,
+      //     y: -10,
+      //     xVel: 0,
+      //     yVel: 0,
+      //   })
+      // }
 
 
       E.triangles = [];
-      for(var i = 0; i < 200; i++){
+      for(var i = 0; i < 500; i++){
         let ox = (Math.random() * 255)|0;
         let oy = (Math.random() * 255)|0;
         let rad = Math.random() * 10;
@@ -51,7 +51,7 @@ E.game = {
 
         E.t = 0;
         E.moveX = 0;
-        E.speedFactor = .2;
+        E.speedFactor = .6;
 
         // E.renderTarget = E.page2;
         // E.gfx.fillRect(0,0,256,256,1);
@@ -87,10 +87,10 @@ E.game = {
             tri.y2 += tri.speed * E.speedFactor;
             tri.y3 += tri.speed * E.speedFactor;
 
-            if(tri.y1 >= 280){
-              tri.y1 -= 280;
-              tri.y2 -= 280;
-              tri.y3 -= 280;
+            if(tri.y1 >= 350){
+              tri.y1 -= 350;
+              tri.y2 -= 350;
+              tri.y3 -= 350;
             }
             /*  //rotate code
             dx1 = tri.x1 + -128,
@@ -135,13 +135,30 @@ E.game = {
         E.gfx.fillRect(0,0,256,256,0);
         for(var i = 0; i < E.triangles.length; i++){
 
+          //convert position to polar coordinates
+
+          let screenTriPoint1 = E.util.polarToPoint(
+            (360/256) * E.triangles[i].x1 * 0.0174533,
+            E.triangles[i].y1 * 0.5
+          );
+
+          let screenTriPoint2 = E.util.polarToPoint(
+            (360/256) * E.triangles[i].x2 * 0.0174533,
+            E.triangles[i].y2 * 0.5
+          );
+
+          let screenTriPoint3 = E.util.polarToPoint(
+            (360/256) * E.triangles[i].x3 * 0.0174533,
+            E.triangles[i].y3 * 0.5
+          );
+
             E.gfx.triangle(
-              E.triangles[i].x1,
-              E.triangles[i].y1,
-              E.triangles[i].x2,
-              E.triangles[i].y2,
-              E.triangles[i].x3,
-              E.triangles[i].y3,
+              screenTriPoint1.x + 128,
+              screenTriPoint1.y +128,
+              screenTriPoint2.x + 128,
+              screenTriPoint2.y + 128,
+              screenTriPoint3.x + 128,
+              screenTriPoint3.y + 128,
               E.triangles[i].color
             )
 
@@ -149,6 +166,8 @@ E.game = {
         //end background
 
         E.player.draw();
+
+        E.gfx.circle(128,128, 127,E.WHITE);
 
         /* Txt.text({
                 x: 128,

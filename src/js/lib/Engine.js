@@ -399,6 +399,29 @@ ENGINE = {
         }
     },
 
+    util: {
+
+      polarToPoint: function (angle, radius) {
+        return {
+            x: Math.cos(angle) * radius,
+            y: Math.sin(angle) * radius
+        };
+    },
+
+      pointToPolar: function(p) {
+          return {
+              angle: Math.atan2(p.y, p.x),
+              radius: this.magnitude(p)
+          };
+      },
+
+      magnitude: function(p) {
+        return this.dist(0, 0, p.x, p.y);
+      },
+
+
+    },
+
     canvasInit: function () {
 
         E.canvas = document.getElementById('canvas');

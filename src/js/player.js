@@ -1,7 +1,7 @@
 E.player = {
   x: 128,
   y: 230,
-  radius: 3,
+  radius: 7,
   xvel: 0,
   yvel: 0,
   speed: 6,
@@ -53,7 +53,7 @@ E.player = {
     //world wrap for player
     if(E.player.x > 256+E.player.radius*2){
       E.player.x = -E.player.radius
-      
+
     }
     if(E.player.x < 0-E.player.radius*2){
       E.player.x = 256+E.player.radius
@@ -71,16 +71,21 @@ E.player = {
 
   draw: function(dt) {
 
-    //E.gfx.fillCircle(E.player.x, E.player.y, E.player.radius, 4);
-    E.gfx.fillTriangle(
-      E.player.x1,
-      E.player.y1,
-      E.player.x2,
-      E.player.y2,
-      E.player.x3,
-      E.player.y3,
-      E.WHITE
-    )
+    let degrees = (360/256) * E.player.x * 0.0174533;
+    let radius = (E.player.y / 2);
+
+    let playerDrawPoint = E.util.polarToPoint(degrees, radius);
+
+    E.gfx.fillCircle(playerDrawPoint.x+128, playerDrawPoint.y+128, E.player.radius, 4);
+    // E.gfx.fillTriangle(
+    //   E.player.x1,
+    //   E.player.y1,
+    //   E.player.x2,
+    //   E.player.y2,
+    //   E.player.x3,
+    //   E.player.y3,
+    //   E.WHITE
+    // )
 
   },
 

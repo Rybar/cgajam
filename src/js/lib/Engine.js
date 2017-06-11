@@ -1,15 +1,6 @@
 ENGINE = {
     E: this,
 
-
-    /*
-     screen memory
-
-     each px:
-
-     000 /flags? 00000 /color -32 color index
-     */
-
     screen: 0x00000,
     page1: 0x10000,
     page2: 0x20000,
@@ -401,6 +392,26 @@ ENGINE = {
 
     util: {
 
+      toPolarScreen: function(p){
+        let degrees = (360/256) * p.x * 0.0174533;
+        let radius = p.y / 2;
+        return E.util.polarToPoint(degrees, radius);
+      },
+
+      norm: function (value, min, max) {
+        return (value - min) / (max - min);
+      },
+
+      dist: function (x0, y0, x1, y1) {
+        if(arguments.length === 2) {
+            return this.dist(x0.x, x0.y, y0.x, y0.y);
+        }
+        var dx = x1 - x0,
+            dy = y1 - y0;
+        return Math.sqrt(dx * dx + dy * dy);
+    },
+
+
       polarToPoint: function (angle, radius) {
         return {
             x: Math.cos(angle) * radius,
@@ -418,6 +429,10 @@ ENGINE = {
       magnitude: function(p) {
         return this.dist(0, 0, p.x, p.y);
       },
+
+      scale: function(p) {
+
+      }
 
 
     },

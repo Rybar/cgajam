@@ -1,14 +1,13 @@
-E.state = {
+var states = {
 
-    create: function() {
-        
+    onenter: function(event, from, to){
+
     },
 
-    //TODO: handle resize in main()
-    // resize: function() {
-    //   E.canvas.width = window.innerWidth;
-    //   E.canvas.height = window.innerHeight;
-    // },
+    onexit: function(event, from, to){
+
+
+    },
 
     step: function(dt) {
 
@@ -18,11 +17,13 @@ E.state = {
 
     render: function(dt) {
 
+        E.gfx.fillRect(0,0,64,64,2);
+
         //draw stuff here.
 
         //can't forget this call!
         //draws indexed color array to actual display canvas
-        E.render();
+
 
     },
 

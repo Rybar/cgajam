@@ -1,68 +1,68 @@
 E.player = {
-  x: 128,
-  y: 230,
-  radius: 7,
-  xvel: 0,
-  yvel: 0,
-  speed: 6,
-  drag: .97,
+  // x: 0,
+  // y: 0,
+  // radius: 12,
+  // xvel: 0,
+  // yvel: 0,
+  // speed: 6,
+  // drag: .97,
 
-  x1: 128-9,
-  x2: 128+9,
-  x3: 128,
-  y1: 230+9,
-  y2: 230+9,
-  y3: 230-9,
+  bullet: {
+    x: 0, y:0, xvel: 0, yvel: 0
+  },
+
+  init: function(){
+    this.x = 64;
+    this.y =  230;
+    this.radius = 12;
+    this.xvel = 0;
+    this.yvel = 0;
+    this.speed = 6;
+    this.drag = .97;
+  },
 
   update: function(dt) {
+    E.player.bullet.x = E.player.x;
+    E.player.bullet.y = E.player.y;
     let xIntegrate = dt * E.player.xvel * E.player.drag;
     let yIntegrate = dt * E.player.yvel * E.player.drag;
 
     E.player.x += xIntegrate;
     E.player.y += yIntegrate;
-    //update triangle points
-    E.player.x1 += xIntegrate;
-    E.player.x2 += xIntegrate;
-    E.player.x3 += xIntegrate;
-    E.player.y1 += yIntegrate;
-    E.player.y2 += yIntegrate;
-    E.player.y3 += yIntegrate;
 
     //player movement
-    if (Key.isDown(Key.a)) {
+    if (Key.isDown(Key.d) || Key.isDown(Key.RIGHT)) {
         E.player.xvel -=E.player.speed;
     }
-
-
-    if (Key.isDown(Key.d)){
+    if (Key.isDown(Key.a) || Key.isDown(Key.LEFT)){
         E.player.xvel +=E.player.speed;
     }
-    if(Key.isDown(Key.w)){
+    if(Key.isDown(Key.w) || Key.isDown(Key.UP)){
       E.player.yvel -=E.player.speed;
     }
-    if(Key.isDown(Key.s)) {
+    if(Key.isDown(Key.s) || Key.isDown(Key.DOWN)) {
       E.player.yvel +=E.player.speed;
     }
-    //end player movement
 
-    //pew pew pew
-    if(Key.isDown(Key.SPACE)){
-
+    if(Key.isDown(Key.SPACE || Key.isDown(Key.z))){
+      //E.player.bullet.xvel = E.player.xvel;
+      E.player.bullet.yvel = -350;
+      bulletPool.get(E.player.bullet);
     }
 
     //world wrap for player
-    if(E.player.x > 256+E.player.radius*2){
-      E.player.x = -E.player.radius
-
+    if(E.player.x > 256){
+      E.player.x = 0;
     }
-    if(E.player.x < 0-E.player.radius*2){
-      E.player.x = 256+E.player.radius
+    if(E.player.x < 0){
+      E.player.x = 256;
     }
-    if(E.player.y > 256+E.player.radius*2){
-      E.player.y = -E.player.radius
+    if(E.player.y > 365){
+      E.player.y = 0;
     }
-    if(E.player.y < 0-E.player.radius*2){
-      E.player.y = 256+E.player.radius
+    if(E.player.y < 0){
+      fsm.lose();
+      E.player.y = 256;
     }
     //end world wrap for player
 
@@ -71,21 +71,17 @@ E.player = {
 
   draw: function(dt) {
 
-    let degrees = (360/256) * E.player.x * 0.0174533;
-    let radius = (E.player.y / 2);
+    // let degrees = (360/256) * E.player.x * 0.0174533;
+    // let radius = (E.player.y / 2);
 
-    let playerDrawPoint = E.util.polarToPoint(degrees, radius);
+    let playerDrawPoint = E.util.toPolarScreen({x:E.player.x, y:E.player.y});
 
-    E.gfx.fillCircle(playerDrawPoint.x+128, playerDrawPoint.y+128, E.player.radius, 4);
-    // E.gfx.fillTriangle(
-    //   E.player.x1,
-    //   E.player.y1,
-    //   E.player.x2,
-    //   E.player.y2,
-    //   E.player.x3,
-    //   E.player.y3,
-    //   E.WHITE
-    // )
+    let distFromCenter = E.util.dist(playerDrawPoint.x+128, playerDrawPoint.y+128, 128,128);
+
+    let playerSizeFactor = E.util.norm(distFromCenter, 0, 128)
+
+    E.gfx.fillCircle(playerDrawPoint.x+128, playerDrawPoint.y+128, E.player.radius * playerSizeFactor, 4);
+
 
   },
 

@@ -1,4 +1,4 @@
-# JS13K 2017 Boilerplate
+# CGA Jam entry
 
 A boilerplate based on an older version of [js13k-toolkit](https://github.com/lucaspenney/js13k-toolkit)
 

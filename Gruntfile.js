@@ -15,34 +15,30 @@ module.exports = function(grunt) {
 			}
 
 		},
-		express:{
-			all:{
-				options:{
-					port:3000,
-					hostname:'localhost',
-					bases:['./'],
-					livereload:false
-				}
-			}
-		},
 
 		concat : {
 			dist : {
 				src  : [
 					'src/js/first.js',
 					'src/js/lib/Engine.js',
+					'src/js/lib/statemachine.js',
+
 					//'src/js/lib/CCapture.all.min.js',
 					'src/js/assets.js',
 					'src/js/lib/pool.js',
 					'src/js/lib/entity.js',
-					'src/js/statemachine.js',
+					'src/js/particle.js',
 
 					'src/js/lib/sonantx.js',
 					'src/js/lib/stats.js',
 					'src/js/lib/input.js',
 					'src/js/lib/text.js',
 
-					'src/js/gamestate.js',
+					'src/js/states/bootstate.js',
+					'src/js/states/gameoverstate.js',
+					'src/js/states/menustate.js',
+					'src/js/states/gamestate.js',
+
 					'src/js/player.js',
 
 					'src/js/main.js',
@@ -184,5 +180,5 @@ module.exports = function(grunt) {
 	grunt.registerTask('build', ['concat:dist', 'less:development', 'htmlmin:development',] );
 	grunt.registerTask('build-compress', ['concat:dist', 'less:compressed', 'htmlmin:compressed', 'uglify:compressed', 'inline:dist', 'compress:main', 'sizecheck']);
 	//grunt.registerTask('build-compress', ['concat:dist','closure-compiler', 'less:compressed', 'htmlmin:compressed', 'inline:dist', 'compress:main', 'sizecheck']);
-	grunt.registerTask('server', ['concat:dist','express','watch']);
+	//grunt.registerTask('server', ['concat:dist','express','watch']);
 };

@@ -23,7 +23,7 @@ module.exports = function(grunt) {
 					'src/js/lib/Engine.js',
 					'src/js/lib/statemachine.js',
 
-					//'src/js/lib/CCapture.all.min.js',
+					'src/js/lib/CCapture.all.min.js',
 					'src/js/assets.js',
 					'src/js/lib/pool.js',
 					'src/js/lib/entity.js',
@@ -158,10 +158,8 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('grunt-contrib-htmlmin');
 	grunt.loadNpmTasks('grunt-contrib-compress');
-	grunt.loadNpmTasks('grunt-express');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-inline');
-	grunt.loadNpmTasks('grunt-closure-compiler');
 
 	var fs = require('fs');
 	grunt.registerTask('sizecheck', function() {

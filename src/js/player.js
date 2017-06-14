@@ -17,31 +17,34 @@ E.player = {
     this.radius = 12;
     this.xvel = 0;
     this.yvel = 0;
-    this.speed = 6;
-    this.drag = .97;
+    this.xspeed = 200;
+    this.yspeed = 400;
+    this.drag = .6;
   },
 
   update: function(dt) {
     E.player.bullet.x = E.player.x;
     E.player.bullet.y = E.player.y;
-    let xIntegrate = dt * E.player.xvel * E.player.drag;
-    let yIntegrate = dt * E.player.yvel * E.player.drag;
+    E.player.xvel *= E.player.drag;
+    E.player.yvel *= E.player.drag;
+    let xIntegrate = dt * E.player.xvel;
+    let yIntegrate = dt * E.player.yvel;
 
     E.player.x += xIntegrate;
     E.player.y += yIntegrate;
 
     //player movement
     if (Key.isDown(Key.d) || Key.isDown(Key.RIGHT)) {
-        E.player.xvel -=E.player.speed;
+        E.player.xvel = - E.player.xspeed;
     }
     if (Key.isDown(Key.a) || Key.isDown(Key.LEFT)){
-        E.player.xvel +=E.player.speed;
+        E.player.xvel = E.player.xspeed;
     }
     if(Key.isDown(Key.w) || Key.isDown(Key.UP)){
-      E.player.yvel -=E.player.speed;
+      E.player.yvel = -E.player.yspeed;
     }
     if(Key.isDown(Key.s) || Key.isDown(Key.DOWN)) {
-      E.player.yvel +=E.player.speed;
+      E.player.yvel = E.player.yspeed;
     }
 
     if(Key.isDown(Key.SPACE || Key.isDown(Key.z))){
@@ -80,7 +83,10 @@ E.player = {
 
     let playerSizeFactor = E.util.norm(distFromCenter, 0, 128)
 
+    E.renderTarget = E.page1;
     E.gfx.fillCircle(playerDrawPoint.x+128, playerDrawPoint.y+128, E.player.radius * playerSizeFactor, 4);
+
+    
 
 
   },

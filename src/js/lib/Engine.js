@@ -306,8 +306,6 @@ ENGINE = {
 
                                 if(E.ram[(E.renderSource + ( ( sy + (sh-i) )*256+sx+(sw-j)))] > 0) {
 
-                                //E.ram[ (E.renderTarget + ((y+i)*256+x+j)) ] = 21;
-
                                 E.ram[ (E.renderTarget + ((y+i)*256+x+j)) ] = E.pal[ E.ram[(E.renderSource + ((sy+(sh-i))*256+sx+(sw-j)))] ];
 
                                 }
@@ -364,6 +362,54 @@ ENGINE = {
 
                 }
             }
+
+
+        },
+
+        rspr: function(
+          sx,
+          sy,
+          sw,
+          sh,
+          destCenterX,
+          destCenterY,
+          scale,
+          angle
+          ){
+            angle = angle * 0.0174533 //convert to radians in place
+            var destWidth = sw * scale;
+            var destHeight = sh * scale;
+             var halfWidth = (destWidth) / 2;
+             var halfHeight = (destHeight) / 2;
+             var startX = destCenterX - halfWidth;
+             var endX = destCenterX + halfWidth;
+             var startY = destCenterY - halfHeight;
+             var endY = destCenterY + halfHeight;
+             var cos = Math.cos(-angle);
+             var sin = Math.sin(-angle);
+             var scaleFactor = 1.0 / scale;
+
+             var dx = startX - sx;
+             var dy = startY - sy;
+
+             for(let y = startY; y < endY; y++){
+
+               for(let x = startX; x < endX; x++){
+
+                 let u = (cos * (x-dx) * scaleFactor + sin * (y-dy) * scaleFactor)|0;
+                 let v = (-sin * (x-dx) * scaleFactor + cos * (y-dy) * scaleFactor)|0;
+
+                 if(u > 0 && v > 0 && u < destWidth && v < destHeight){
+                   E.ram[(E.renderTarget + (y * 256 + x)) ] = E.ram[(E.renderSource + (v * 256 + u)) ]
+                 }
+                 else {
+                   E.ram[(E.renderTarget + (y * 256 + x)) ] = 0;
+                 }
+
+               } //end x loop
+
+             } //end outer y loop
+
 
 
         },

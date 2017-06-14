@@ -90,7 +90,6 @@ states.game = {
     },
 
     render: function(dt) {
-        //pink background orbs
         E.renderTarget = E.page1;
 
         E.gfx.fillRect(0,0,256,256,0);
@@ -102,39 +101,11 @@ states.game = {
           E.gfx.pset(starDrawPoint.x+128, starDrawPoint.y+128, E.MAGENTA);
         }
         E.gfx.fillCircle(128,128,10,0);
-        /*for(var i = 0; i < E.triangles.length; i++){
 
-          //convert position to polar coordinates
-
-          let screenTriPoint1 = E.util.polarToPoint(
-            (360/256) * E.triangles[i].x1 * 0.0174533,
-            E.triangles[i].y1 * 0.5
-          );
-
-          let screenTriPoint2 = E.util.polarToPoint(
-            (360/256) * E.triangles[i].x2 * 0.0174533,
-            E.triangles[i].y2 * 0.5
-          );
-
-          let screenTriPoint3 = E.util.polarToPoint(
-            (360/256) * E.triangles[i].x3 * 0.0174533,
-            E.triangles[i].y3 * 0.5
-          );
-
-            // E.gfx.triangle(
-            //   screenTriPoint1.x + 128,
-            //   screenTriPoint1.y +128,
-            //   screenTriPoint2.x + 128,
-            //   screenTriPoint2.y + 128,
-            //   screenTriPoint3.x + 128,
-            //   screenTriPoint3.y + 128,
-            //   E.triangles[i].color
-            // )
-
-          }*/
-        //end background
 
         E.player.draw();
+
+
         var bp = bulletPool.getPool();
         //console.log(bp);
         for(let i = 0; i < bp.length; i++){
@@ -199,7 +170,23 @@ states.game = {
             E.renderTarget = E.screen;
             E.gfx.spr(0,0,256,256);
 
-        E.render();
+            //test graphic for rotation
+            E.renderTarget = E.page5;
+            E.gfx.checker(64,64,E.CYAN);
+            E.gfx.fillRect(64,0,66,16,E.WHITE);
+            E.gfx.fillRect(64,0,68,4,E.MAGENTA);
+
+            //render test graphic to screen without rotation
+            E.renderSource = E.page5;
+            E.renderTarget = E.screen;
+            E.gfx.spr(64,0,16,16, 200,200);
+
+            //render rotated
+            E.renderSource = E.page5;
+            E.renderTarget = E.screen;
+            E.gfx.rspr(64,0, 16, 16, 128,128, 2, 5);
+
+        //E.render();
 
         //E.capturer.capture(E.canvas);
 

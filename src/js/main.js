@@ -71,8 +71,8 @@ init = function(){
   } );
 
   //init vid capture
-  E.capturer = new CCapture( {format: 'gif', workersPath: ''});
-  E.capturer.start();
+  //E.capturer = new CCapture( {format: 'gif', workersPath: ''});
+  //E.capturer.start();
 
   //state machine
   fsm.load();
@@ -85,6 +85,7 @@ init = function(){
 
 stopCapture = function(e){
   E.capturer.stop();
+  E.capturer.save();
 }
 
 loop = function(){
@@ -105,7 +106,7 @@ loop = function(){
   E.render();
 
   //GIF capture
-  E.capturer.capture(E.canvas);
+  //E.capturer.capture(E.canvas);
 
   stats.end();
   requestAnimationFrame(loop);

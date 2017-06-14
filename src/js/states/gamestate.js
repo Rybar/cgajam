@@ -13,13 +13,8 @@ states.game = {
         E.sounds.song = buffer;
 
       });
-
-
       // --------end hacky sound stuff
 
-      //init vid capture
-    //  E.capturer = new CCapture( {format: 'gif', workersPath: ''});
-      //E.capturer.start();
 
         bulletPool = new Pool(100, Particle);
 
@@ -184,12 +179,9 @@ states.game = {
             //render rotated
             E.renderSource = E.page5;
             E.renderTarget = E.screen;
-            E.gfx.rspr(64,0, 16, 16, 128,128, 2, 5);
+            E.gfx.rspr(64,3, 24, 24, 128,128, 5, E.t*40);
 
-        //E.render();
-
-        //E.capturer.capture(E.canvas);
-
+        E.render();
     },
 
 

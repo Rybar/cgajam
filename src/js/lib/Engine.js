@@ -399,7 +399,7 @@ ENGINE = {
                  let u = (cos * (x-dx) * scaleFactor + sin * (y-dy) * scaleFactor)|0;
                  let v = (-sin * (x-dx) * scaleFactor + cos * (y-dy) * scaleFactor)|0;
 
-                 if(u > 0 && v > 0 && u < destWidth && v < destHeight){
+                 if(u >= 0 && v >= 0 && u <= destWidth && v <= destHeight){
                    E.ram[(E.renderTarget + (y * 256 + x)) ] = E.ram[(E.renderSource + (v * 256 + u)) ]
                  }
                  else {
@@ -430,7 +430,7 @@ ENGINE = {
               for (var j = 0, col = nCol / 2; j < col; ++j) {
                 x = 2 * j * w + (i % 2 ? 0 : w);
                 y = i * h;
-                  E.gfx.fillRect(x, y, x+w, y+h, color);
+                  E.gfx.fillRect(x, y, x+w-1, y+h-1, color);
               }
           }
         }

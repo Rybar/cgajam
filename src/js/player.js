@@ -84,9 +84,9 @@ E.player = {
     let playerSizeFactor = E.util.norm(distFromCenter, 0, 128)
 
     E.renderTarget = E.page1;
-    E.gfx.fillCircle(playerDrawPoint.x+128, playerDrawPoint.y+128, E.player.radius * playerSizeFactor, 4);
+    E.gfx.fillCircle(playerDrawPoint.x+128, playerDrawPoint.y+128, E.player.radius * playerSizeFactor, 21);
 
-    
+
 
 
   },

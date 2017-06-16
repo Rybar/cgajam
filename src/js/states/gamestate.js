@@ -22,18 +22,18 @@ states.game = {
 
 
 
-        E.stars = [];
-        for(var i = 0; i < 300; i++){
-          E.stars.push({
-            x: Math.random()*256,
-            y: Math.random()*256,
-            speed: Math.random() * 6
-          })
-        };
-
-
-        E.moveX = 0;
-        E.speedFactor = .6;
+        // E.stars = [];
+        // for(var i = 0; i < 300; i++){
+        //   E.stars.push({
+        //     x: Math.random()*256,
+        //     y: Math.random()*256,
+        //     speed: Math.random() * 6
+        //   })
+        // };
+        //
+        //
+        // E.moveX = 0;
+        // E.speedFactor = .6;
 
         // E.renderTarget = E.page2;
         // E.gfx.fillRect(0,0,256,256,1);
@@ -85,6 +85,7 @@ states.game = {
     },
 
     render: function(dt) {
+
         E.renderTarget = E.page1;
 
         E.gfx.fillRect(0,0,256,256,0);
@@ -93,19 +94,15 @@ states.game = {
           let degrees = (360/256) * E.stars[i].x * 0.0174533;
           let radius = (E.stars[i].y / 2);
           let starDrawPoint = E.util.polarToPoint(degrees, radius);
-          E.gfx.pset(starDrawPoint.x+128, starDrawPoint.y+128, E.MAGENTA);
+          E.gfx.pset(starDrawPoint.x+128, starDrawPoint.y+128, 16);
         }
         E.gfx.fillCircle(128,128,10,0);
 
-
         E.player.draw();
 
-
         var bp = bulletPool.getPool();
-        //console.log(bp);
         for(let i = 0; i < bp.length; i++){
           if(!bp[i].dead){
-            //console.log('drawing bullet '+ i);
 
             bulletScreenPoint = E.util.toPolarScreen({
               x: bp[i].x,
@@ -113,10 +110,8 @@ states.game = {
             });
             let distFromCenter = E.util.dist(bulletScreenPoint.x+128, bulletScreenPoint.y+128, 128, 128)
             let sizeFactor = E.util.norm(distFromCenter, 0, 128);
-            E.gfx.fillCircle(bulletScreenPoint.x+128, bulletScreenPoint.y+128, 4 * sizeFactor, E.WHITE);
-            //E.gfx.pset(bulletScreenPoint.x+128, bulletScreenPoint.y+128, E.WHITE);
-            //E.gfx.circle(bp[i].x, bp[i].y, 3, 4);
-            //console.log(bp[i].x, + " " + bp[i].y);
+            E.gfx.fillCircle(bulletScreenPoint.x+128, bulletScreenPoint.y+128, 4 * sizeFactor, E.White);
+
           }
         }
 
@@ -135,7 +130,8 @@ states.game = {
 
         E.renderTarget = E.page2;
         //page screen clear
-        E.gfx.fillRect(0,0,256,256,0);
+        //E.gfx.fillRect(0,0,256,256,0);
+        E.gfx.clear(0);
         Txt.text({
                 x: 8,
                 y: 240,
@@ -148,12 +144,13 @@ states.game = {
                 scale: 1,
                 snap: 1,
                 render: 1,
-                color: E.CYAN,
+                color: E.VeniceBlue,
             });
 
             E.renderSource = E.page3;
             E.renderTarget = E.screen;
-            E.gfx.fillRect(0,0,256,256,1);
+            //E.gfx.fillRect(0,0,256,256,1);
+            E.gfx.clear(1);
             E.gfx.spr(0,0,256,256);
 
             E.renderSource = E.page1;
@@ -167,21 +164,20 @@ states.game = {
 
             //test graphic for rotation
             E.renderTarget = E.page5;
-            E.gfx.checker(64,64,E.CYAN);
-            E.gfx.fillRect(64,0,66,16,E.WHITE);
-            E.gfx.fillRect(64,0,68,4,E.MAGENTA);
+            E.gfx.checker(64,64,18);
+            E.gfx.fillRect(64,16,66,32,E.White);
+            E.gfx.fillRect(64,16,68,20,E.PinkPlum);
 
             //render test graphic to screen without rotation
             E.renderSource = E.page5;
             E.renderTarget = E.screen;
-            E.gfx.spr(64,0,16,16, 200,200);
+            E.gfx.spr(64,16,16,16, 200,200);
 
             //render rotated
-            E.renderSource = E.page5;
-            E.renderTarget = E.screen;
-            E.gfx.rspr(64,3, 24, 24, 128,128, 5, E.t*40);
+            //E.renderSource = E.page5;
+            //E.renderTarget = E.screen;
+            //E.gfx.rspr(64, 16, 16, 16, 64,64, 3, 1);
 
-        E.render();
     },
 
 

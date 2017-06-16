@@ -66,7 +66,7 @@ states.boot = {
                 scale: 10,
                 snap: 1,
                 render: 1,
-                color: E.WHITE,
+                color: E.White,
             });
 
         //draw stuff here.

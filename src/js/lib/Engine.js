@@ -9,29 +9,58 @@ ENGINE = {
     page5: 0x50000,
     page6: 0x60000,
     page7: 0x70000,
+    
+    //color enum
+    Black: 0,
+    Valhalla: 1,
+    LouLou: 2,
+    OiledCedar: 3,
+    Rope: 4,
+    TahitiGold: 5,
+    Twine: 6,
+    Pancho: 7,
+    GoldenFizz: 8,
+    Atlantis: 9,
+    Christi: 10,
+    ElfGreen: 11,
+    Dell: 12,
+    Verdigris: 13,
+    Opal: 14,
+    DeepKoamaru: 15,
+    VeniceBlue: 16,
+    RoyalBlue: 17,
+    Cornflower: 18,
+    Viking: 19,
+    LightSteelBlue: 20,
+    White: 21,
+    Heather: 22,
+    Topaz: 23,
+    DimGray: 24,
+    SmokeyAsh: 25,
+    Clairvoyant: 26,
+    Red: 27,
+    Mandy: 28,
+    PinkPlum: 29,
+    RainForest: 30,
+    Stinger: 31,
 
-    TRANSPARENT: 0,
-    BLACK: 1,
-    MAGENTA: 2,
-    CYAN: 3,
-    WHITE: 4,
     //DB32 Palette
-    /* colors: [0xff000000, 0xff342022, 0xff3c2845, 0xff313966, 0xff3b568f, 0xff2671df, 0xff66a0d9, 0xff9ac3ee, 0xff36f2fb,
+    colors: [0xff000000, 0xff342022, 0xff3c2845, 0xff313966, 0xff3b568f, 0xff2671df, 0xff66a0d9, 0xff9ac3ee, 0xff36f2fb,
         0xff50e599, 0xff30be6a, 0xff6e9437, 0xff2f694b, 0xff244b52, 0xff393c32, 0xff743f3f, 0xff826030, 0xffe16e5b,
         0xffff9b63, 0xffe4cd5f, 0xfffcdbcb, 0xffffffff, 0xffb7ad9b, 0xff877e84, 0xff6a6a69, 0xff525659, 0xff8a4276,
-        0xff3232ac, 0xff6357d9, 0xffba7bd7, 0xff4a978f, 0xff306f8a], */
+        0xff3232ac, 0xff6357d9, 0xffba7bd7, 0xff4a978f, 0xff306f8a],
 
-    colors: [0xff000000, 0xff000000, 0xffff55ff, 0xffffff55, 0xffffffff ], //cga palette
+    //colors: [0xff000000, 0xff000000, 0xffff55ff, 0xffffff55, 0xffffffff ], //cga palette
 
 //    brightness: [0,1,2,14,3,15,13,27,26,25,16,4,12,24,31,28,17,23,11,5,30,29,18,6,10,22,19,7,9,20,8,21],
 
-    //palDefault: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],
+    palDefault: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],
 
-    palDefault: [0,1,2,3,4], //cga palette
+    //palDefault: [0,1,2,3,4], //cga palette
 
-    //pal: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],
+    pal: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],
 
-    pal: [0, 1, 2, 3, 4], //cga palette
+    //pal: [0, 1, 2, 3, 4], //cga palette
 
     renderTarget: 0x00000,
 
@@ -377,27 +406,35 @@ ENGINE = {
           angle
           ){
             angle = angle * 0.0174533 //convert to radians in place
+            var sourceCenterX = sx + sw / 2;
+            var sourceCenterY = sy + sh / 2;
+
             var destWidth = sw * scale;
             var destHeight = sh * scale;
+
              var halfWidth = (destWidth) / 2;
              var halfHeight = (destHeight) / 2;
+
              var startX = destCenterX - halfWidth;
              var endX = destCenterX + halfWidth;
+
              var startY = destCenterY - halfHeight;
              var endY = destCenterY + halfHeight;
+
              var cos = Math.cos(-angle);
              var sin = Math.sin(-angle);
+
              var scaleFactor = 1.0 / scale;
 
-             var dx = startX - sx;
-             var dy = startY - sy;
+             var dx = destCenterX - sourceCenterX;
+             var dy = destCenterY - sourceCenterY;
 
              for(let y = startY; y < endY; y++){
 
                for(let x = startX; x < endX; x++){
 
-                 let u = (cos * (x-dx) * scaleFactor + sin * (y-dy) * scaleFactor)|0;
-                 let v = (-sin * (x-dx) * scaleFactor + cos * (y-dy) * scaleFactor)|0;
+                 let u = ( (cos * (x) * scaleFactor + sin * (y) * scaleFactor)|0 )+dx;
+                 let v = ( (-sin * (x) * scaleFactor + cos * (y) * scaleFactor)|0 )+dy;
 
                  if(u >= 0 && v >= 0 && u <= destWidth && v <= destHeight){
                    E.ram[(E.renderTarget + (y * 256 + x)) ] = E.ram[(E.renderSource + (v * 256 + u)) ]
